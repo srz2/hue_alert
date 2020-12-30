@@ -100,7 +100,7 @@ def alert_fishes_standard():
         thread.daemon = True
         thread.start()
         
-        return 'Alerted Fish!'
+        return render_template('success.html')
     except Exception as e:
         print(e)
         return 'Failed to alert fish...'
@@ -117,7 +117,7 @@ def alert_fishes_angry():
         thread.daemon = True
         thread.start()
 
-        return 'Fish is in trouble....'
+        return render_template('anger.html')
     except Exception as e:
         print(e)
         return 'Failed to alert fish, he''s in even more trouble now...'
