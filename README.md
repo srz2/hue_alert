@@ -37,7 +37,7 @@ Clicking with the **Angry Alert** will:
 
 1) `git clone https://github.com/srz2/hue_alert.git`
 2) cd into hue_alert
-3) Execute `python3 config.py`
+3) Execute `python3 config.py` and fill out the fields presented.
 4) Initially run the app `flask run`
 5) Click the hue bridge button
 6) Navigate to `http://<ip_address>/authorize`. Get the code given and copy it as the 
