@@ -16,13 +16,14 @@ config = parser['DEFAULT']
 hue_bridge_ip = config['ip_address']
 uuid = config['uuid']
 light_id = config['light_id']
+device = config['device']
 
 desk_lamp_uri = f'{hue_bridge_ip}/api/{uuid}/lights/{light_id}/state'
 command_on_standard = '{"on": true,"bri": 254, "hue": 10208,"sat": 254,"xy": [0.3131,0.3288],"colormode": "xy"}'
 command_on_angry = '{"on": true,"bri": 254,"hue": 65125,"sat": 253,"xy": [0.6626,0.3159],"colormode": "xy","reachable": true}'
 command_on = '{"on": true,"bri": 254, "hue": 10208,"sat": 254,"xy": [0.3131,0.3288],"colormode": "xy"}'
 command_off = '{"on":false}'
-command_authorize = '{"devicetype":"alert_app#raspberry_pi"}'
+command_authorize = '{"devicetype":"alert_app#' + device + '"}'
 
 app = Flask(__name__)
 
@@ -65,7 +66,7 @@ def home():
 
 @app.route('/authorize')
 def authorize():
-    r = requests.put(hue_bridge_ip + '/api', data=command_authorize)
+    r = requests.post(hue_bridge_ip + '/api', data=command_authorize)
     return r.text
 
 @app.route('/check')
@@ -122,8 +123,14 @@ def alert_fishes_angry():
         print(e)
         return 'Failed to alert fish, he''s in even more trouble now...'
 
+
+@app.route('/lights')
+def get_lights():
+    r = requests.get(hue_bridge_ip + '/api/' + uuid + '/lights')
+    return r.text
+
 def check_connected():
-    r = requests.get(hue_bridge_ip + '/api' + '/' + uuid + '/lights')
+    r = requests.get(hue_bridge_ip + '/api/' + uuid + '/lights')
     if 'error' in r.text:
         return False
     else:

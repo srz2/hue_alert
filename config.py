@@ -44,14 +44,20 @@ questions = [
     },
     {
         'type': 'input',
-        'name': 'uuid',
-        'message': 'Input the UUID for the Hue Bridge API Requests:'
+        'name': 'device',
+        'message': 'Give your app''s instance a name:',
+        'default': 'raspberry_pi'
     },
-    {
-        'type': 'input',
-        'name': 'light_id',
-        'message': 'What is the light ID:'
-    },
+    # {
+    #     'type': 'input',
+    #     'name': 'uuid',
+    #     'message': 'Input the UUID for the Hue Bridge API Requests:'
+    # },
+    # {
+    #     'type': 'input',
+    #     'name': 'light_id',
+    #     'message': 'What is the light ID:'
+    # },
     {
         'type': 'confirm',
         'name': 'continue',
@@ -81,15 +87,17 @@ if not opt_overwrite is None:
 
 # Get answers
 bridge_ip = answers['bridge_ip']
-uuid = answers['uuid']
-light_id = answers['light_id']
+uuid = '[Replace_Me]'
+light_id = '[Replace_Me]'
+device = answers['device']
 
 # Configure the INI object
 config = configparser.ConfigParser()
 config['DEFAULT'] = {
     'ip_address': 'http://' + bridge_ip,
     'uuid': uuid,
-    'light_id': light_id
+    'light_id': light_id,
+    'device': device
 }
 
 # Write Object to file

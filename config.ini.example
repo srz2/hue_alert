@@ -2,3 +2,4 @@
 ip_address = http://[localip]
 uuid = [UUID From Bridge]
 light_id = [ID of Light]
+device = [device name]
