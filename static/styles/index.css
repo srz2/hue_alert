@@ -1,15 +1,18 @@
 @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap');
 
+:root {
+    --primary-button-color: #007bff;
+    --love-button-color: #f5429b;
+    --angry-button-color: #dc3545;
+    --button-text-color:#e3e3e3;
+}
+
 * {
     box-sizing: border-box;
 }
 
 body {
     background-image: linear-gradient(90deg, #3480eb, #ad2ac7);
-}
-
-a {
-    width: 260px;
 }
 
 h1, p {
@@ -32,15 +35,12 @@ p {
     flex-direction: column;
 }
 
-.btn {
-    margin: 25px 0;
-    padding: 25px;
-    font-size: 36px;
-    width: 260px;
+.row {
+    flex-direction: row;
 }
 
-.btn:hover {
-    transform: scale(0.96);
+.row .mybtn:nth-child(2) {
+    margin-left: 25px;
 }
 
 p {
@@ -50,4 +50,31 @@ p {
 img {
     margin-top: 15px;
     width: 300px;
+}
+
+.mybtn {
+    margin: 25px 0;
+    padding: 25px;
+    font-size: 36px;
+    width: 260px;
+    border-radius: .25rem;
+    color: var(--button-text-color);
+}
+
+.mybtn:hover {
+    text-decoration: none;
+    color: var(--button-text-color);
+    transform: scale(0.95);
+}
+
+.mybtn-standard {
+    background-color: var(--primary-button-color);
+}
+
+.mybtn-love {
+    background-color: var(--love-button-color);
+}
+
+.mybtn-angry {
+    background-color: var(--angry-button-color);
 }
