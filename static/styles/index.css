@@ -15,14 +15,14 @@ body {
     background-image: linear-gradient(90deg, #3480eb, #ad2ac7);
 }
 
-h1, p {
-    color: white;
-    width: 600px;
-    margin: 0 auto;
+.header {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 }
 
-p {
-    padding-left: 25px;
+h1, p {
+    color: white;
 }
 
 .container {
