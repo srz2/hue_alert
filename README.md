@@ -35,6 +35,8 @@ Clicking with the **Angry Alert** will:
 
 ## Installation
 
+*Note:* You can use `https://<bridge ip address>/debug/clip.html` to play with the commands in a development enviornment.
+
 1) `git clone https://github.com/srz2/hue_alert.git`
 2) cd into hue_alert
 3) Execute `python3 config.py` and fill out the fields presented.

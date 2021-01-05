@@ -20,6 +20,7 @@ device = config['device']
 
 desk_lamp_uri = f'{hue_bridge_ip}/api/{uuid}/lights/{light_id}/state'
 command_on_standard = '{"on": true,"bri": 254, "hue": 10208,"sat": 254,"xy": [0.3131,0.3288],"colormode": "xy"}'
+command_on_ping = '{"on": true,"bri": 165, "hue": 31528, "sat": 57, "xy": [0.4654, 0.4714], "colormode": "xy"}'
 command_on_angry = '{"on": true,"bri": 254,"hue": 65125,"sat": 253,"xy": [0.6626,0.3159],"colormode": "xy"}'
 command_on_love = '{"on": true,"bri": 254,"hue": 34113,"sat": 254,"xy": [0.3806,0.1896],"colormode": "xy"}'
 command_on = '{"on": true,"bri": 254, "hue": 10208,"sat": 254,"xy": [0.3131,0.3288],"colormode": "xy"}'
@@ -68,6 +69,21 @@ class ThreadCommandExecution_Love(threading.Thread):
         send_command(command_on_love)
         time.sleep(2)
         send_command(command_off)
+
+
+class ThreadCommandExecution_Ping(threading.Thread):
+    def __init__(self, name):
+        threading.Thread.__init__(self)
+        self.name = name
+
+    def run(self):
+        threading.Thread.run(self)
+        for x in range(0, 2):
+            send_command(command_on_ping)
+            time.sleep(0.5)
+            send_command(command_off)
+            time.sleep(0.5)
+
 
 @app.route('/favicon.ico')
 def favicon():
@@ -119,6 +135,21 @@ def alert_fishes_standard():
         print(e)
         return 'Failed to alert fish...'
 
+@app.route('/ping')
+def alert_fishes_ping():
+    try:
+        success = check_connected()
+        if not success:
+            raise Exception('Check connection failed')
+
+        thread = ThreadCommandExecution_Ping('Ping Alert')
+        thread.daemon = True
+        thread.start()
+
+        return render_template('pinged.html')
+    except Exception as e:
+        print(e)
+        return 'Failed to alert fish...'
 
 @app.route('/angry')
 def alert_fishes_angry():

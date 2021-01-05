@@ -5,6 +5,8 @@
     --love-button-color: #f5429b;
     --angry-button-color: #dc3545;
     --button-text-color:#e3e3e3;
+    --ping-button-color: #f5e942;
+    --ping-text-color: #0540b5;
 }
 
 * {
@@ -41,6 +43,7 @@ h1, p {
 
 .row .mybtn:nth-child(2) {
     margin-left: 25px;
+    margin-right: 25px;
 }
 
 p {
@@ -78,4 +81,13 @@ img {
 
 .mybtn-angry {
     background-color: var(--angry-button-color);
+}
+
+.mybtn-ping {
+    color: var(--ping-text-color);
+    background-color: var(--ping-button-color);
+}
+
+.mybtn-ping:hover {
+    color: var(--ping-text-color);
 }
