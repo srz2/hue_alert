@@ -1,5 +1,6 @@
 import os
 import time
+import json
 import requests
 import threading
 import configparser
@@ -32,11 +33,21 @@ command_authorize = '{"devicetype":"alert_app#' + device + '"}'
 
 app = Flask(__name__)
 
-
-class ThreadCommandExecution_Standard(threading.Thread):
+class ThreadCommandExecution_Base(threading.Thread):
     def __init__(self, name):
         threading.Thread.__init__(self)
         self.name = name
+        self.reset_to_initial_state = True
+        self.initial_state = get_current_state()
+
+    def __del__(self):
+        if self.reset_to_initial_state:
+            time.sleep(1)
+            send_command(self.initial_state)
+
+class ThreadCommandExecution_Standard(ThreadCommandExecution_Base):
+    def __init__(self, name):
+        super().__init__(name)
 
     def run(self):
         threading.Thread.run(self)
@@ -46,11 +57,10 @@ class ThreadCommandExecution_Standard(threading.Thread):
             send_command(command_off)
             time.sleep(1)
 
-
-class ThreadCommandExecution_Angry(threading.Thread):
+class ThreadCommandExecution_Angry(ThreadCommandExecution_Base):
     def __init__(self, name):
-        threading.Thread.__init__(self)
-        self.name = name
+        super().__init__(name)
+        self.reset_to_initial_state = False
 
     def run(self):
         threading.Thread.run(self)
@@ -61,11 +71,9 @@ class ThreadCommandExecution_Angry(threading.Thread):
             time.sleep(0.5)
         send_command(command_on_angry)
 
-
-class ThreadCommandExecution_Love(threading.Thread):
+class ThreadCommandExecution_Love(ThreadCommandExecution_Base):
     def __init__(self, name):
-        threading.Thread.__init__(self)
-        self.name = name
+        super().__init__(name)
 
     def run(self):
         threading.Thread.run(self)
@@ -73,11 +81,9 @@ class ThreadCommandExecution_Love(threading.Thread):
         time.sleep(2)
         send_command(command_off)
 
-
-class ThreadCommandExecution_Ping(threading.Thread):
+class ThreadCommandExecution_Ping(ThreadCommandExecution_Base):
     def __init__(self, name):
-        threading.Thread.__init__(self)
-        self.name = name
+        super().__init__(name)
 
     def run(self):
         threading.Thread.run(self)
@@ -119,6 +125,11 @@ def turn_off():
         return 'turned off'
     else:
         return 'Failed to turn off'
+
+@app.route('/current')
+def get_current():
+    cur = get_current_state()
+    return cur
 
 
 @app.route('/standard')
@@ -196,6 +207,14 @@ def check_connected():
         return False
     else:
         return True
+
+def get_current_state():
+    r = requests.get(desk_lamp_uri_light)
+    if r.status_code == 200:
+        obj = json.loads(r.text)['state']
+        return json.dumps(obj)
+    else:
+        return ''
 
 def send_command(command):
     r = requests.put(desk_lamp_uri_light_state, command)
