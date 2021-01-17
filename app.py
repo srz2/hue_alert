@@ -18,7 +18,10 @@ uuid = config['uuid']
 light_id = config['light_id']
 device = config['device']
 
-desk_lamp_uri = f'{hue_bridge_ip}/api/{uuid}/lights/{light_id}/state'
+# Need split because GET request for just the state uri is not available
+desk_lamp_uri_light = f'{hue_bridge_ip}/api/{uuid}/lights/{light_id}'
+desk_lamp_uri_light_state = f'{desk_lamp_uri_light}/state'
+
 command_on_standard = '{"on": true,"bri": 254, "hue": 10208,"sat": 254,"xy": [0.3131,0.3288],"colormode": "xy"}'
 command_on_ping = '{"on": true,"bri": 165, "hue": 31528, "sat": 57, "xy": [0.4654, 0.4714], "colormode": "xy"}'
 command_on_angry = '{"on": true,"bri": 254,"hue": 65125,"sat": 253,"xy": [0.6626,0.3159],"colormode": "xy"}'
@@ -84,7 +87,6 @@ class ThreadCommandExecution_Ping(threading.Thread):
             send_command(command_off)
             time.sleep(0.5)
 
-
 @app.route('/favicon.ico')
 def favicon():
     return send_from_directory(os.path.join(app.root_path, 'static'), 'favicon.ico', mimetype='image/vnd.microsoft.icon')
@@ -104,7 +106,7 @@ def check():
 
 @app.route('/on')
 def turn_on():
-    r = requests.put(desk_lamp_uri, data=command_on)
+    r = requests.put(desk_lamp_uri_light_state, data=command_on)
     if r.status_code == 200:
         return 'turned on'
     else:
@@ -112,7 +114,7 @@ def turn_on():
 
 @app.route('/off')
 def turn_off():
-    r = requests.put(desk_lamp_uri, data=command_off)
+    r = requests.put(desk_lamp_uri_light_state, data=command_off)
     if r.status_code == 200:
         return 'turned off'
     else:
@@ -196,7 +198,7 @@ def check_connected():
         return True
 
 def send_command(command):
-    r = requests.put(desk_lamp_uri, command)
+    r = requests.put(desk_lamp_uri_light_state, command)
     if r.status_code == 200:
         return True
     else:
