@@ -54,9 +54,9 @@ class ThreadCommandExecution_Standard(ThreadCommandExecution_Base):
         threading.Thread.run(self)
         for x in range(0, 3):
             send_command(command_on_standard)
-            time.sleep(1)
+            time.sleep(0.5)
             send_command(command_off)
-            time.sleep(1)
+            time.sleep(0.5)
 
 class ThreadCommandExecution_Angry(ThreadCommandExecution_Base):
     def __init__(self, name):
@@ -88,7 +88,7 @@ class ThreadCommandExecution_Ping(ThreadCommandExecution_Base):
 
     def run(self):
         threading.Thread.run(self)
-        for x in range(0, 2):
+        for x in range(0, 1):
             send_command(command_on_ping)
             time.sleep(0.5)
             send_command(command_off)
