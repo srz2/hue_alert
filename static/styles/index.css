@@ -4,9 +4,11 @@
     --primary-button-color: #007bff;
     --love-button-color: #f5429b;
     --angry-button-color: #dc3545;
+    --tea-button-color: #5f775e;
     --button-text-color:#e3e3e3;
     --ping-button-color: #f5e942;
     --ping-text-color: #0540b5;
+    --tea-text-color: rgb(162, 185, 76);
 }
 
 * {
@@ -90,4 +92,9 @@ img {
 
 .mybtn-ping:hover {
     color: var(--ping-text-color);
+}
+
+.mybtn-tea {
+    color: var(--tea-text-color);
+    background-color: var(--tea-button-color);
 }

@@ -27,6 +27,7 @@ command_on_standard = '{"on": true,"bri": 254, "hue": 10208,"sat": 254,"xy": [0.
 command_on_ping = '{"on": true,"bri": 165, "hue": 31528, "sat": 57, "xy": [0.4654, 0.4714], "colormode": "xy"}'
 command_on_angry = '{"on": true,"bri": 254,"hue": 65125,"sat": 253,"xy": [0.6626,0.3159],"colormode": "xy"}'
 command_on_love = '{"on": true,"bri": 254,"hue": 34113,"sat": 254,"xy": [0.3806,0.1896],"colormode": "xy"}'
+command_on_tea  = '{"on": true,"bri": 254, "hue": 25600,"sat": 254,"xy": [ 0.1772, 0.6946 ], "colormode": "xy"}'
 command_on = '{"on": true,"bri": 254, "hue": 10208,"sat": 254,"xy": [0.3131,0.3288],"colormode": "xy"}'
 command_off = '{"on":false}'
 command_authorize = '{"devicetype":"alert_app#' + device + '"}'
@@ -90,6 +91,18 @@ class ThreadCommandExecution_Ping(ThreadCommandExecution_Base):
         for x in range(0, 2):
             send_command(command_on_ping)
             time.sleep(0.5)
+            send_command(command_off)
+            time.sleep(0.5)
+
+class ThreadCommandExecution_Tea(ThreadCommandExecution_Base):
+    def __init__(self, name):
+        super().__init__(name)
+
+    def run(self):
+        threading.Thread.run(self)
+        for x in range(0, 2):
+            send_command(command_on_tea)
+            time.sleep(1.5)
             send_command(command_off)
             time.sleep(0.5)
 
@@ -195,6 +208,22 @@ def alert_fishes_love():
     except Exception as e:
         print(e)
         return 'Failed to alert fish of your loves'
+
+@app.route('/tea')
+def alert_fishes_tea():
+    try:
+        success = check_connected()
+        if not success:
+            raise Exception('Check connection failed')
+
+        thread = ThreadCommandExecution_Tea('Tea Alert')
+        thread.daemon = True
+        thread.start()
+
+        return render_template('tea.html')
+    except Exception as e:
+        print(e)
+        return 'Fish is missing out on some gossip'
 
 @app.route('/lights')
 def get_lights():
